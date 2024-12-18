@@ -58,7 +58,8 @@ def extract_one_page(content, url=None):
                     if not file_name.lower().endswith(('.png', '.jpg', '.jpeg')):
                         file_name += '.png'
 
-                    save_path = os.path.join("sochfactcheck", file_name)
+                    save_path = os.path.join("Sochfactcheck_images", file_name)
+                    
 
                     # Save the image
                     try:
