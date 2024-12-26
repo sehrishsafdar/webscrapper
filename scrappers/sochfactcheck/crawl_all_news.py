@@ -1,14 +1,11 @@
 import requests
-
-def load_latest_posts(offset, tag=0):
-    """
-    Fetches the latest posts using an offset and tag (optional).
-    """
+from utils import string_util
+def load_latest_posts(page):
     # Define the URL and data to send in the POST request
-    url = 'https://www.geo.tv/category/geo-fact-check/more_news'
+    url = 'https://www.sochfactcheck.com/wp-admin/admin-ajax.php'
     data = {
-        'offset': offset,  # Incremental offset for pagination
-        'tag': tag         # Active tag value, default is 0
+        'action': 'load_latest_posts',
+        'page': page
     }
 
     # Send the POST request
@@ -17,47 +14,47 @@ def load_latest_posts(offset, tag=0):
 
         # Check if the request was successful
         if response.status_code == 200:
-            response_text = response.text  # Raw HTML response
-            if response_text.strip():  # Check if the response is not empty
-                return response_text, True  # Return the HTML content and True for more pages
+            response_data = response.json()  # Parse the response JSON
+
+            # Check if the response indicates success
+            if response_data.get('success'):
+                # Process the posts and handle the button (in a script context this would be UI interaction)
+                posts = response_data.get('data', {}).get('posts', [])
+                has_more = response_data.get('data', {}).get('has_more', False)
+
+                return posts, has_more
+                
             else:
-                return "", False  # Empty response indicates no more pages
+                print("Error: Response does not indicate success.")
+                return False
         else:
             print(f"Failed to fetch data. Status code: {response.status_code}")
-            return "", False
+            return False
 
     except requests.exceptions.RequestException as e:
         print(f"An error occurred: {e}")
-        return "", False
+        return False
 
 
 def scrape_all_pages():
     
-    offset = 0  
-    tag = 0  
+    page = 1
+    
     all_pages_posts = []
 
     while True:
-        print(f"Fetching posts for offset: {offset}...")
-        html_response, has_more = load_latest_posts(offset, tag)
+        posts, has_more = load_latest_posts(page)
 
-        if html_response:
-            # Append the raw HTML response to the list (process it later as needed)
-            all_pages_posts.append(html_response)
-            print(f"Offset {offset} extracted successfully!")
-        else:
-            print("No more posts to fetch. Exiting...")
+        all_pages_posts.append(posts)
+
+        if not has_more:
             break
 
-        # Increment the offset for the next page
-        offset += 1
+        print(f'Page {page} extracted successfully!')
+
+        page += 1
+        #if page == 30:
+        break
 
     print('--- Data crawled from all pages! ---')
     return all_pages_posts
-
-'''
-# Example usage
-if __name__ == "__main__":
-    all_posts = scrape_all_pages()
-    print(f"Total pages fetched: {len(all_posts)}")
-'''

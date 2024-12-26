@@ -32,7 +32,7 @@ def scrape_all_pages():
     """
     Crawls and collects posts from all pages.
     """
-    offset = 0  
+    offset = 2 
     tag = 0  
     all_pages_posts = []
 
@@ -45,17 +45,17 @@ def scrape_all_pages():
             all_pages_posts.append(html_response)
             print(f"Offset {offset} extracted successfully!")
         else:
-            print("No more posts to fetch. Exiting...")
+            print("No more posts to fetch.")
             break
 
         offset += 1
-
+        break
     print('--- Data crawled from all pages! ---')
     return all_pages_posts
 
 '''
 # Example usage
-if __name__ == "__main__":
+if _name_ == "_main_":
     all_posts = scrape_all_pages()
     print(f"Total pages fetched: {len(all_posts)}")
 '''
