@@ -1,8 +1,8 @@
 import csv
-from scrappers.sochfactcheck.news_extractor import extract_details
-from scrappers.sochfactcheck.crawl_all_news import scrape_all_pages
+from webscrapper.scrappers.sochfactcheck.news_extractor import extract_details
+from webscrapper.scrappers.sochfactcheck.crawl_all_news import scrape_all_pages
 from datetime import datetime
-from utils import string_util
+from webscrapper.utils import string_util
 all_pages = scrape_all_pages()
 all_articles = []
 
