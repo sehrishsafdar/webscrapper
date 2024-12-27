@@ -1,7 +1,7 @@
 Lib/
 iverify_articles.csv
 Scripts/ 
-soch_factcheck_articles.csv
+#soch_factcheck_articles.csv
 Sochfactcheck_images/
 iverify_allarticles/
 afp_images/
